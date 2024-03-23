@@ -84,6 +84,8 @@ class Fogo(pygame.sprite.Sprite):
         self.fogo_img_rect.right = enemy.enemy_img_rect.left
         self.fogo_img_rect.top = enemy.enemy_img_rect.top + 30
         self.last_frame_time = pygame.time.get_ticks()
+        self.sound = pygame.mixer.Sound('fogo.wav')
+        self.sound.play()
 
     def update(self):
         # Verifica se é hora de atualizar a animação
@@ -96,6 +98,7 @@ class Fogo(pygame.sprite.Sprite):
         tela.blit(self.image, self.fogo_img_rect)
         if self.fogo_img_rect.left > 0:
             self.fogo_img_rect.left -= self.fogo_velocity 
+
 
 class Heroi(pygame.sprite.Sprite):
     velocity = 1
