@@ -5,8 +5,8 @@ pygame.init()
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 600
 FPS = 60
-BLACK = (0,0,0)
-GREEN = (0,255,0)
+BLACK = (172,212,115)
+GREEN = (54,54,54)
 ADD_NEW_FLAME_RATE = 45
 CLOCK = pygame.time.Clock()
 font = pygame.font.SysFont('forte',20)
@@ -72,17 +72,28 @@ class Enemy(pygame.sprite.Sprite):
         
 class Fogo(pygame.sprite.Sprite):
     fogo_velocity = 10
+    frame_delay = 82
   
     def __init__(self):
-        self.fogo = pygame.image.load('fire.png')
-        self.fogo_img = pygame.transform.scale(self.fogo, (20,20))
-        self.fogo_img_rect = self.fogo_img.get_rect()
+        self.fogo_imgs = [pygame.image.load('f1.png'),pygame.image.load('f2.png'),pygame.image.load('f3.png')]
+        self.index = 0
+        self.frame_count = 0
+        self.image = self.fogo_imgs[0]
+        # self.fogo_img = pygame.transform.scale(self.fogo, (20,20))
+        self.fogo_img_rect = self.image.get_rect()
         self.fogo_img_rect.right = enemy.enemy_img_rect.left
         self.fogo_img_rect.top = enemy.enemy_img_rect.top + 30
+        self.last_frame_time = pygame.time.get_ticks()
 
     def update(self):
-        tela.blit(self.fogo_img, self.fogo_img_rect)
-        
+        # Verifica se é hora de atualizar a animação
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_frame_time > self.frame_delay:
+            self.index = (self.index + 1) % len(self.fogo_imgs)
+            self.image = self.fogo_imgs[self.index]
+            self.last_frame_time = current_time
+            
+        tela.blit(self.image, self.fogo_img_rect)
         if self.fogo_img_rect.left > 0:
             self.fogo_img_rect.left -= self.fogo_velocity 
 
