@@ -57,7 +57,7 @@ class Enemy:
         elif self.down:
             self.enemy_img_rect.top += self.enemy_velocity
         
-class Fogo:
+class Fogo(pygame.sprite.Sprite):
     fogo_velocity = 10
   
     def __init__(self):
@@ -73,19 +73,32 @@ class Fogo:
         if self.fogo_img_rect.left > 0:
             self.fogo_img_rect.left -= self.fogo_velocity 
 
-class Heroi:
+class Heroi(pygame.sprite.Sprite):
     velocity = 1
+    frame_delay = 32
     
     def __init__(self):
-        self.heroi_img = pygame.image.load('heroi.png')
-        self.heroi_img_rect = self.heroi_img.get_rect()
+        self.heroi_imgs = [pygame.image.load('h1.png'),pygame.image.load('h2.png'),pygame.image.load('h3.png')]
+        self.index = 0
+        self.frame_count = 0
+        self.image = self.heroi_imgs[0]
+        self.heroi_img_rect = self.image.get_rect()
         self.heroi_img_rect.left = 20
         self.heroi_img_rect.top = WINDOW_HEIGHT/2 - 100
         self.down = True
         self.up = False
+        self.last_frame_time = pygame.time.get_ticks()
         
     def update(self):
-        tela.blit(self.heroi_img, self.heroi_img_rect)
+        # Verifica se é hora de atualizar a animação
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_frame_time > self.frame_delay:
+            self.index = (self.index + 1) % len(self.heroi_imgs)
+            self.image = self.heroi_imgs[self.index]
+            self.last_frame_time = current_time
+        
+        
+        tela.blit(self.image, self.heroi_img_rect)
         if self.heroi_img_rect.top <= teto_img_rect.bottom:
             game_over()
             if SCORE > self.heroi_score:
@@ -177,6 +190,12 @@ def game_loop():
           check_level(SCORE)
           enemy.update()
           add_new_fogo_counter += 1
+          
+          if heroi.index >= len(heroi.heroi_imgs):
+              heroi.index = 0
+          heroi.image = heroi.heroi_imgs[heroi.index]
+          heroi.index += 1
+          
           
           if add_new_fogo_counter == ADD_NEW_FLAME_RATE:
               add_new_fogo_counter = 0
