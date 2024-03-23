@@ -210,8 +210,8 @@ def game_loop():
       SCORE = 0
       global HIGH_SCORE
       fogo_list = []
-      # pygame.mixer.music.load('tema.wav')
-      # pygame.mixer.music.play(-1, 0.0)
+      pygame.mixer.music.load('tema.wav')
+      pygame.mixer.music.play(-1, 0.0)
       while True:
           tela.fill(BLACK)
           check_level(SCORE)
