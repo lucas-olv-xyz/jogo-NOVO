@@ -18,7 +18,7 @@ piso_img_rect = piso_img.get_rect()
 piso_img_rect.left = 0
 
 tela = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('jooj maker')
+pygame.display.set_caption('MOSQUITO MANIA')
 
 class Topscore:
     def __init__(self):
@@ -141,7 +141,7 @@ def game_over():
     # music = pygame.mixer.sound('heroi_morte.wav')
     # music.play()
     topscore.top_score(SCORE)
-    game_over_img = pygame.image.load('start.png')
+    game_over_img = pygame.image.load('over.png')
     game_over_img_rect = game_over_img.get_rect()
     game_over_img_rect.center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
     tela.blit(game_over_img, game_over_img_rect)
