@@ -99,7 +99,6 @@ class Fogo(pygame.sprite.Sprite):
         if self.fogo_img_rect.left > 0:
             self.fogo_img_rect.left -= self.fogo_velocity 
 
-
 class Heroi(pygame.sprite.Sprite):
     velocity = 1
     frame_delay = 32
