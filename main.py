@@ -30,21 +30,34 @@ class Topscore:
       
 topscore = Topscore()
 
-class Enemy:
+class Enemy(pygame.sprite.Sprite):
     enemy_velocity = 5
+    frame_delay = 70
   
     def __init__(self):
-        self.enemy_img = pygame.image.load('enemy.png')
-        self.enemy_img_rect = self.enemy_img.get_rect()
+        self.enemy_imgs = [pygame.image.load('e1.png'),pygame.image.load('e2.png'),pygame.image.load('e3.png')]
+        self.index = 0
+        self.frame_count = 0
+        self.image = self.enemy_imgs[0]
+        self.enemy_img_rect = self.image.get_rect()
         self.enemy_img_rect.width -= 10
         self.enemy_img_rect.height -= 10
         self.enemy_img_rect.top = WINDOW_HEIGHT/2
-        self.enemy_img_rect.right = WINDOW_WIDTH
+        self.enemy_img_rect.right = WINDOW_WIDTH - 20
         self.up = True
         self.down = False
+        self.last_frame_time = pygame.time.get_ticks()
         
     def update(self):
-        tela.blit(self.enemy_img, self.enemy_img_rect)
+                # Verifica se é hora de atualizar a animação
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_frame_time > self.frame_delay:
+            self.index = (self.index + 1) % len(self.enemy_imgs)
+            self.image = self.enemy_imgs[self.index]
+            self.last_frame_time = current_time
+        
+        
+        tela.blit(self.image, self.enemy_img_rect)
         if self.enemy_img_rect.top <= teto_img_rect.bottom:
             self.up = False
             self.down = True
